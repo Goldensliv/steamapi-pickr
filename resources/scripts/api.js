@@ -2,7 +2,6 @@ const express = require('express'); // dependencies yada yada
 const app = express(); // oooga booga
 const key = require('./auth.js'); // used to assign the steamapi key to a variable without including it in the source code 
 const id64 = [] // array of steamids to be used, will become user input eventually, for now, manually modify it
-let profiles = [] // empty array that will contain the completed list of profiles and their data
 
 async function getProfileData() { // gets data about a batch of steam profiles and returns the raw json output. only needs to be called once
         try {
@@ -35,6 +34,7 @@ async function getGameData(id) { // gets data about games owned by individual ac
 };
 
 async function createProfiles() { // function that begins organizing the data and arranging for it to be appended to the final profiles array
+    let profiles = [] // empty array that will contain the completed list of profiles and their data
     const data = await getProfileData()
 
     for (let i = 0; i < data.response.players.length; i++) { // create an array of appids for every inputted account to be added to the final profile array with the other objects
@@ -52,10 +52,7 @@ async function createProfiles() { // function that begins organizing the data an
             games:gameids
         })
     }
+    return profiles
 };
 
-async function main() { // main function in javascript, why? because async/await hurts me
-    await createProfiles()
-    console.log(profiles) // just to make sure its working, prints out the final organized array
-}
-main()
+module.exports = {createProfiles}
