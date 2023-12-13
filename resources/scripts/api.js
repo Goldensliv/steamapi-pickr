@@ -1,9 +1,6 @@
-const express = require('express'); // dependencies yada yada
-const app = express(); // oooga booga
 const key = require('./auth.js'); // used to assign the steamapi key to a variable without including it in the source code 
-const id64 = [] // array of steamids to be used, will become user input eventually, for now, manually modify it
 
-async function getProfileData() { // gets data about a batch of steam profiles and returns the raw json output. only needs to be called once
+async function getProfileData(id64) { // gets data about a batch of steam profiles and returns the raw json output. only needs to be called once
         try {
         const nameURL = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${key}&steamids=${id64}&format=json`;
         console.log('Making Request to:', nameURL);
@@ -33,9 +30,9 @@ async function getGameData(id) { // gets data about games owned by individual ac
     }
 };
 
-async function createProfiles() { // function that begins organizing the data and arranging for it to be appended to the final profiles array
+async function createProfiles(id64) { // function that begins organizing the data and arranging for it to be appended to the final profiles array
     let profiles = [] // empty array that will contain the completed list of profiles and their data
-    const data = await getProfileData()
+    const data = await getProfileData(id64)
 
     for (let i = 0; i < data.response.players.length; i++) { // create an array of appids for every inputted account to be added to the final profile array with the other objects
         const currentprofile = data.response.players[i];
