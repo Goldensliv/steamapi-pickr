@@ -1,6 +1,11 @@
 const ids = [] //array of steamid64s to get data on
 
-fetch('http://localhost:3000/', {
+function sendData() {
+    ids.push(document.getElementById('id1').value);
+    ids.push(document.getElementById('id2').value);
+    ids.push(document.getElementById('id3').value);
+
+    fetch('http://localhost:3000/', {
     method: 'POST',
     headers: {
         'Content-Type':'application/json'
@@ -19,3 +24,4 @@ fetch('http://localhost:3000/', {
 .catch(error => {
     console.error(error);
 });
+}
